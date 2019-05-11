@@ -8,5 +8,7 @@ sed 's/,,/,\\N,/g' out.5 > out.6 #Aquí se reemplazan los espacios vacíos (que 
 sed -e 's/.$/,/' out.6 > out.7 #Aquí le agrego una coma al final de cada línea, con el fin de poder identificar a cuáles líneas les falta el valor de la cuarta columna
 sed 's/,,/,\\N,/g' out.7 > out.8 #Aquí se reemplazan las celdas vacías, es decir, que tienen dos comas juntas, por el \N, con la intención de que todas las líneas queden con una coma al final
 sed -e  's/.$//' out.8 > out.9 #Aquí se elimina el último elemento de cada fila, es decir, la coma
-grep -v \N out.9 > final #Aquí se filtran las líneas que no contienen \N, es decir, si una fila no contiene \N es porque no tiene campos nulos 
-rm out.* #Elimino todos los archivo que no son el definitivo que necesito
+cat out.9 | tr [:lower:] [:upper:] > out.10 #Aquí se cambian minúsculas por mayúsculas
+sed 's/,N/\,\\N/g' out.10 > out.11 #Aquí se cambian las N por valores nulos \N
+grep -v \N out.11  #Aquí se filtran las líneas que no contienen \N, es decir, si una fila no contiene \N es porque no tiene campos nulos 
+rm out.* #Aquí se eliminan los archivos temporales
